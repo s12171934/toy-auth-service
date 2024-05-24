@@ -68,18 +68,12 @@ public class SecurityConfig {
         http.httpBasic((auth) -> auth.disable());
 
         //custom filter 등록
-        http.addFilterAt(new CustomLoginFilter(
-                authenticationManager(authenticationConfiguration),
-                refreshService,
-                jwtUtil,
-                cookieUtil),
-                UsernamePasswordAuthenticationFilter.class);
+        CustomLoginFilter customLoginFilter = new CustomLoginFilter(authenticationManager(authenticationConfiguration), refreshService, jwtUtil, cookieUtil);
+        customLoginFilter.setFilterProcessesUrl("/auth/login");
+        http.addFilterAt(customLoginFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.addFilterBefore(new CustomLogoutFilter(
-                refreshRepository,
-                refreshService,
-                cookieUtil),
-                LogoutFilter.class);
+        CustomLogoutFilter customLogoutFilter = new CustomLogoutFilter(refreshRepository, refreshService, cookieUtil);
+        http.addFilterBefore(customLogoutFilter, LogoutFilter.class);
 
         //session stateless하게 관리 for JWT
         http

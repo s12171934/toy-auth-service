@@ -50,7 +50,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        String username = authResult.getPrincipal().toString();
+        String username = authResult.getName();
 
         //role 획득 과정
         Collection<? extends GrantedAuthority> authorities = authResult.getAuthorities();
@@ -62,7 +62,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         String accessToken = jwtUtil.createJwt("access", username, role, 10 * 60 * 1000L);
         String refreshToken = jwtUtil.createJwt("refresh", username, role, 24 * 60 * 60 * 1000L);
 
-        refreshService.addRefreshEntity(username, role);
+        refreshService.addRefreshEntity(username, refreshToken);
 
         response.addHeader("access", accessToken);
         response.addCookie(cookieUtil.createCookie("refresh", refreshToken));

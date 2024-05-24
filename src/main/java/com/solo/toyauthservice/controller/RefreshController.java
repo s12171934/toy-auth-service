@@ -21,7 +21,7 @@ public class RefreshController {
         return refreshService.reissueToken(request, response);
     }
 
-    @GetMapping("/login/login")
+    @GetMapping("/auth/test")
     public String test(){
         return "test";
     }

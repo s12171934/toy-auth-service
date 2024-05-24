@@ -63,7 +63,7 @@ public class RefreshService {
 
         //key = refresh인 쿠키의 token이 refresh token인지 검사
         String category = jwtUtil.getCategory(refresh);
-        if (category.equals("refresh")) return "invalid refresh token";
+        if (!category.equals("refresh")) return "invalid refresh token";
 
         //refesh token이 redis에 저장되어 있는지 검사
         boolean isExist = refreshRepository.existsById(refresh);
