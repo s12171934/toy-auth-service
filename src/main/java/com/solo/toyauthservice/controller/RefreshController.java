@@ -22,7 +22,8 @@ public class RefreshController {
     }
 
     @GetMapping("/auth/test")
-    public String test(){
+    public String test(HttpServletRequest request){
+        System.out.println(request.getHeader("passport"));
         return "test";
     }
 }
