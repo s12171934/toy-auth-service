@@ -1,5 +1,6 @@
 package com.solo.toyauthservice.controller;
 
+import com.solo.toyauthservice.entity.UserEntity;
 import com.solo.toyauthservice.service.RefreshService;
 import jakarta.servlet.http.*;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,12 @@ public class RefreshController {
         return refreshService.reissueToken(request, response);
     }
 
+    //gateway를 통한 테스트
     @GetMapping("/auth/test")
-    public String test(HttpServletRequest request){
+    public String test(HttpServletRequest request, @RequestBody UserEntity userEntity){
         System.out.println(request.getHeader("passport"));
+        System.out.println(userEntity.getRole());
+
         return "test";
     }
 }

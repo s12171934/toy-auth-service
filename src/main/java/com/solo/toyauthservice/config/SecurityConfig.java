@@ -1,11 +1,12 @@
 package com.solo.toyauthservice.config;
 
-import com.solo.toyauthservice.filter.CustomLoginFilter;
-import com.solo.toyauthservice.filter.CustomLogoutFilter;
+import com.solo.toyauthservice.filter.*;
+import com.solo.toyauthservice.oauth2.CustomSuccessHandler;
 import com.solo.toyauthservice.repository.RefreshRepository;
+import com.solo.toyauthservice.repository.UserRepository;
+import com.solo.toyauthservice.oauth2.CustomOAuth2UserService;
 import com.solo.toyauthservice.service.RefreshService;
-import com.solo.toyauthservice.util.CookieUtil;
-import com.solo.toyauthservice.util.JWTUtil;
+import com.solo.toyauthservice.util.*;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,23 +23,32 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final UserRepository userRepository;
     private final RefreshRepository refreshRepository;
     private final RefreshService refreshService;
     private final JWTUtil jwtUtil;
     private final CookieUtil cookieUtil;
+    private final CustomSuccessHandler customSuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
+                          UserRepository userRepository,
                           RefreshRepository refreshRepository,
                           RefreshService refreshService,
                           JWTUtil jwtUtil,
-                          CookieUtil cookieUtil
+                          CookieUtil cookieUtil,
+                          CustomSuccessHandler customSuccessHandler,
+                          CustomOAuth2UserService customOAuth2UserService
     ) {
 
         this.authenticationConfiguration = authenticationConfiguration;
+        this.userRepository = userRepository;
         this.refreshRepository = refreshRepository;
         this.refreshService = refreshService;
         this.jwtUtil = jwtUtil;
         this.cookieUtil = cookieUtil;
+        this.customSuccessHandler = customSuccessHandler;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     //authenticationManager Bean 등록
@@ -66,6 +76,13 @@ public class SecurityConfig {
 
         //http basic disable
         http.httpBasic((auth) -> auth.disable());
+
+        //oauth2
+        http.oauth2Login((oauth2) -> oauth2
+                .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                        .userService(customOAuth2UserService))
+                .successHandler(customSuccessHandler)
+        );
 
         //custom filter 등록
         CustomLoginFilter customLoginFilter = new CustomLoginFilter(authenticationManager(authenticationConfiguration), refreshService, jwtUtil, cookieUtil);

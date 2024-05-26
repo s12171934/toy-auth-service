@@ -15,6 +15,7 @@ public class PassportController {
         this.passportService = passportService;
     }
 
+    //json형식으로 header에 삽입
     @GetMapping("/auth/passport")
     public String issuePassport(HttpServletRequest request) throws Exception{
 
