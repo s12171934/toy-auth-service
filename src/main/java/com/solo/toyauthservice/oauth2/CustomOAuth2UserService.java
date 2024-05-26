@@ -46,6 +46,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             UserEntity userEntity = new UserEntity();
             userEntity.setUsername(username);
             userEntity.setName(oAuth2Response.getEmail());
+            userEntity.setEmail(oAuth2Response.getEmail());
             userEntity.setRole("ROLE_USER");
 
             userRepository.save(userEntity);
@@ -53,6 +54,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return new CustomOAuth2User(userEntity);
         }
         else {
+            existUser.setEmail(oAuth2Response.getEmail());
 
             userRepository.save(existUser);
 
