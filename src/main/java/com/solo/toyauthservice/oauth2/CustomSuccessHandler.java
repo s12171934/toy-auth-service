@@ -2,15 +2,12 @@ package com.solo.toyauthservice.oauth2;
 
 import com.solo.toyauthservice.dto.CustomOAuth2User;
 import com.solo.toyauthservice.service.RefreshService;
-import com.solo.toyauthservice.util.CookieUtil;
-import com.solo.toyauthservice.util.JWTUtil;
-import jakarta.servlet.FilterChain;
+import com.solo.toyauthservice.util.*;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.*;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +16,9 @@ import java.util.*;
 
 @Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
+
+    @Value("${front-end.url}")
+    private String viewUrl;
 
     private final JWTUtil jwtUtil;
     private final CookieUtil cookieUtil;
@@ -53,6 +53,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         response.addCookie(cookieUtil.createCookie("refresh", refreshToken));
         response.setStatus(HttpStatus.OK.value());
 
-        response.sendRedirect("http://localhost:3000/");
+        response.sendRedirect(viewUrl);
     }
 }

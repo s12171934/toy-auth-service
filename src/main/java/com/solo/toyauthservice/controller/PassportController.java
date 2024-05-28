@@ -2,10 +2,10 @@ package com.solo.toyauthservice.controller;
 
 import com.solo.toyauthservice.service.PassportService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 public class PassportController {
 
     private final PassportService passportService;
@@ -16,7 +16,7 @@ public class PassportController {
     }
 
     //json형식으로 header에 삽입
-    @GetMapping("/auth/passport")
+    @GetMapping("/passport")
     public String issuePassport(HttpServletRequest request) throws Exception{
 
         String accessToken = request.getHeader("access");

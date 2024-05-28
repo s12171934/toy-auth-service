@@ -1,10 +1,8 @@
 package com.solo.toyauthservice.config;
 
 import com.solo.toyauthservice.filter.*;
-import com.solo.toyauthservice.oauth2.CustomSuccessHandler;
-import com.solo.toyauthservice.repository.RefreshRepository;
-import com.solo.toyauthservice.repository.UserRepository;
-import com.solo.toyauthservice.oauth2.CustomOAuth2UserService;
+import com.solo.toyauthservice.repository.*;
+import com.solo.toyauthservice.oauth2.*;
 import com.solo.toyauthservice.service.RefreshService;
 import com.solo.toyauthservice.util.*;
 import org.springframework.context.annotation.*;
@@ -23,7 +21,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
-    private final UserRepository userRepository;
     private final RefreshRepository refreshRepository;
     private final RefreshService refreshService;
     private final JWTUtil jwtUtil;
@@ -32,7 +29,6 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
 
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
-                          UserRepository userRepository,
                           RefreshRepository refreshRepository,
                           RefreshService refreshService,
                           JWTUtil jwtUtil,
@@ -42,7 +38,6 @@ public class SecurityConfig {
     ) {
 
         this.authenticationConfiguration = authenticationConfiguration;
-        this.userRepository = userRepository;
         this.refreshRepository = refreshRepository;
         this.refreshService = refreshService;
         this.jwtUtil = jwtUtil;
