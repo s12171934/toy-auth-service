@@ -2,6 +2,7 @@ package com.solo.toyauthservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solo.toyauthservice.dto.PassportDTO;
 import com.solo.toyauthservice.entity.UserEntity;
 import com.solo.toyauthservice.util.JWTUtil;
 import org.springframework.stereotype.Service;
@@ -18,14 +19,14 @@ public class PassportService {
 
     public String createPassport(String accessToken) throws JsonProcessingException {
 
-        UserEntity userEntity = new UserEntity();
+        PassportDTO passportDTO = new PassportDTO();
         String username = jwtUtil.getUsername(accessToken);
         String role = jwtUtil.getRole(accessToken);
 
-        userEntity.setUsername(username);
-        userEntity.setRole(role);
+        passportDTO.setUsername(username);
+        passportDTO.setRole(role);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(userEntity);
+        return objectMapper.writeValueAsString(passportDTO);
     }
 }
