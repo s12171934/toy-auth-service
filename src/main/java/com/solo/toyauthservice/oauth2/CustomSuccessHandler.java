@@ -47,12 +47,16 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtUtil.createJwt("access", username, role, 10 * 60 * 1000L);
         String refreshToken = jwtUtil.createJwt("refresh", username, role, 24 * 60 * 60 * 1000L);
 
+        //redis에 refresh token 저장
         refreshService.addRefreshEntity(username, refreshToken);
 
+        //access token은 header, refresh token은 cookie를 통해 local 저장
         response.addHeader("access", accessToken);
         response.addCookie(cookieUtil.createCookie("refresh", refreshToken));
         response.setStatus(HttpStatus.OK.value());
 
+        //OAuth2의 경우, HyperLink로 API서버에 로그인 요청을 하므로 response를 통해 token을 전달 할 수 없음
+        //redirect를 통해 새로운 페이지로 리다이렉트
         response.sendRedirect(viewUrl);
     }
 }

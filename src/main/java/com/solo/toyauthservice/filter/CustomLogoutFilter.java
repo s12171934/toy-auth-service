@@ -3,7 +3,6 @@ package com.solo.toyauthservice.filter;
 import com.solo.toyauthservice.repository.RefreshRepository;
 import com.solo.toyauthservice.service.RefreshService;
 import com.solo.toyauthservice.util.CookieUtil;
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import org.springframework.web.filter.GenericFilterBean;
@@ -30,6 +29,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+        //HTTP요청과 관련된 메서드를 사용하기 위해 형변환한 오버로드 메서드 사용
         doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
     }
 

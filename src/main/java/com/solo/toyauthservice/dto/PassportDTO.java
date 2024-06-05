@@ -4,5 +4,7 @@ import lombok.Data;
 
 @Data
 public class PassportDTO {
-    private String username, role;
+
+    private String username;
+    private String role;
 }

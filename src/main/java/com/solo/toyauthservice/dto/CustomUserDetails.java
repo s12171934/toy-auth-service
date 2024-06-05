@@ -43,26 +43,28 @@ public class CustomUserDetails implements UserDetails {
         return userEntity.getUsername();
     }
 
+    //계정 사용가능 조건 표시, true면 해당 검증에서 통과, false가 있으면 사용 불가
+
     @Override
-    public boolean isAccountNonExpired() {
+    public boolean isAccountNonExpired() { //계정의 만료 여부
 
         return true;
     }
 
     @Override
-    public boolean isAccountNonLocked() {
+    public boolean isAccountNonLocked() { //계정의 잠금 상태
 
         return true;
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {
+    public boolean isCredentialsNonExpired() { //자격 증명의 만료 여부
 
         return true;
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isEnabled() { //계정 활성화 여부
 
         return true;
     }

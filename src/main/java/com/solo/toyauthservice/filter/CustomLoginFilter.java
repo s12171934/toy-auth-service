@@ -9,9 +9,8 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
+import java.io.*;
+import java.util.*;
 
 public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -62,13 +61,16 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         String accessToken = jwtUtil.createJwt("access", username, role, 10 * 60 * 1000L);
         String refreshToken = jwtUtil.createJwt("refresh", username, role, 24 * 60 * 60 * 1000L);
 
+        //redis에 refresh token 저장
         refreshService.addRefreshEntity(username, refreshToken);
 
+        //access token은 header, refresh token은 cookie를 통해 local에 저장
         response.addHeader("access", accessToken);
         response.addCookie(cookieUtil.createCookie("refresh", refreshToken));
         response.setStatus(HttpStatus.OK.value());
     }
 
+    //로그인 실패시 401 redirect
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
 

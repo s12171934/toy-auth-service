@@ -6,6 +6,7 @@ import com.solo.toyauthservice.repository.UserRepository;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
+//jwt를 위한 CustomUserDetails을 사용하기 위해 Custom
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 

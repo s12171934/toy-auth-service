@@ -46,16 +46,14 @@ public class SecurityConfig {
         this.customOAuth2UserService = customOAuth2UserService;
     }
 
-    //authenticationManager Bean 등록
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
 
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    //비밀번호 암호화 메서드
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public BCryptPasswordEncoder bCryptPasswordEncoder() { //비밀번호 암호화 메서드
 
         return new BCryptPasswordEncoder();
     }
@@ -79,7 +77,7 @@ public class SecurityConfig {
                 .successHandler(customSuccessHandler)
         );
 
-        //custom filter 등록
+        //custom filter 등록 - 로그인 / 로그아웃
         CustomLoginFilter customLoginFilter = new CustomLoginFilter(authenticationManager(authenticationConfiguration), refreshService, jwtUtil, cookieUtil);
         customLoginFilter.setFilterProcessesUrl("/auth/login");
         http.addFilterAt(customLoginFilter, UsernamePasswordAuthenticationFilter.class);

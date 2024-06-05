@@ -26,6 +26,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         System.out.println(oAuth2User);
 
+        //어떤 OAUth2 Server와 통신하는 확인 후 OAuth2Respone를 해당 Server객체로 구현
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         OAuth2Response oAuth2Response = null;
 
@@ -38,9 +39,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return  null;
         }
 
+        //OAuth로 로그인 시 username 설정, 이미 로그인한 적이 있는지 없는지 확인
         String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
         UserEntity existUser = userRepository.findByUsername(username);
 
+        //로그인 한 적이 없다면, DB에 해당 회원 저장
         if(existUser == null) {
 
             UserEntity userEntity = new UserEntity();
@@ -53,6 +56,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             return new CustomOAuth2User(userEntity);
         }
+        //로그인 한 적이 있다면, 정보 갱신
         else {
             existUser.setEmail(oAuth2Response.getEmail());
 
